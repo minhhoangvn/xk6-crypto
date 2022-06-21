@@ -31,6 +31,7 @@ import { hkdf } from "k6/x/crypto";
 - [generateKeyPair](README.md#generatekeypair)
 - [hkdf](README.md#hkdf)
 - [pbkdf2](README.md#pbkdf2)
+- [rsaPublicEncryptWithBase64PublicKey](README.md#rsaPublicEncryptWithBase64PublicKey)
 
 ## Type aliases
 
@@ -156,3 +157,18 @@ Supported hash function names:
 **Returns:** ArrayBuffer
 
 The generated derived key.
+
+___
+### rsaPublicEncryptWithBase64PublicKey
+
+▸ **rsaPublicEncryptWithBase64PublicKey**(`publicKey`: *string*, `encryptData`: *string*): String
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `publicKey` | *string* | The public key data in base64 string |
+| `encryptData` | *string* | The data need to encrypt |
+
+**Returns:** string
+

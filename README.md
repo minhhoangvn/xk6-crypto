@@ -4,6 +4,8 @@ A k6 extension for using extended crypto functions, mostly from [golang.org/x/cr
 
 Built for [k6](https://go.k6.io/k6) using [xk6](https://github.com/grafana/xk6).
 
+This project is fork from https://github.com/szkiba/xk6-crypto and further support will take place in this repository
+
 ## Usage
 
 Import an entire module's contents:
@@ -24,6 +26,7 @@ Functions:
 - [generateKeyPair](docs/README.md#generatekeypair)
 - [hkdf](docs/README.md#hkdf)
 - [pbkdf2](docs/README.md#pbkdf2)
+- [rsaPublicEncryptWithBase64PublicKey](docs/README.md#rsaPublicEncryptWithBase64PublicKey)
 
 For complete API documentation click [here](docs/README.md)!
 
@@ -43,5 +46,5 @@ Then:
 
 2. Build the binary:
   ```bash
-  $ xk6 build --with github.com/szkiba/xk6-crypto@latest
+  $ xk6 build --with github.com/minhhoangvn/xk6-crypto@latest
   ```
