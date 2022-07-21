@@ -24,7 +24,7 @@
 
 export { options } from "./expect.js";
 import { describe } from "./expect.js";
-import { hkdf, pbkdf2, generateKeyPair, ecdh, rsaPublicEncryptWithBase64PublicKey} from "k6/x/crypto";
+import { hkdf, pbkdf2, generateKeyPair, ecdh, rsaPublicEncryptWithBase64PublicKey, rsaEncryptOAEP} from "k6/x/crypto";
 
 export default function () {
   describe("hkdf", (t) => {
@@ -62,6 +62,18 @@ export default function () {
 
   describe("rsaPublicEncryptWithBase64PublicKey", (t) => {
     const data = rsaPublicEncryptWithBase64PublicKey("MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJo26jOpAMWZkXEQnyWWV54e5bkxBSH7OK+FbYUycxXG5NitcFkNv/QuEuSqwC8xy8rcUKaLOSwQpCz0o+l8vO8CAwEAAQ==", "YJGWOWQ4YMYTOTKYZC0ZODAWLWJKZTGTMDDMZTA4NJY0N2Y0")
+    t.expect(data.length).as("public key length").toBeGreaterThan(32);
+  });
+
+  describe("rsaEncryptOAEP", (t) => {
+    const data = rsaEncryptOAEP(
+      "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwL8xETaqklh9+QzMG5YB3H/UFdvvUgmuGMTHE3+VvARes69+0EFrfZFF/eXESmK7IPwSCfWy8cOB7dsx47Fq6pT+8pomJmEb9hN+uJj18KAal3e/RMd+ojsi7PT0x7oUbrHkFQpTxLgNJqIj2W3B5pLVteoeOikW3gBo/gyh3mdFCSsmrqHy1TLpVo9tCUZlVbFK1ZOIsJ7jiO0cO+lJB99cXlk2poWLrASyaBdoOM1QchTWNDewVIjLrSbwGX6rnbjBFfOorw0kiwANyazLT5ta1pkNF4sl29JJWFJjE/X9nkxx1mH/y+z34TZvLUWO7qp9ZOvX5V+HTMpMl9teDwIDAQAB",
+      JSON.stringify({
+        "pin": "b1fc8496935a5a50e758bc3da1b779f87cda43c2703b527198c4f03483e0fab1",
+        "salt": "711fb3a2-d25e-4235-9cc6-9641c5302e6f"
+      }),
+      "sha256")
+    console.log(data);
     t.expect(data.length).as("public key length").toBeGreaterThan(32);
   });
 }

@@ -230,6 +230,32 @@ func (c *Crypto) RsaPublicEncryptWithBase64PublicKey(ctx context.Context, public
 	return base64.StdEncoding.EncodeToString(ciphertext), nil
 }
 
+func (c *Crypto) RsaEncryptOAEP(ctx context.Context, publicKey string, encryptData string, hash string) (string, error) {
+	b, err := base64.StdEncoding.DecodeString(publicKey)
+	encryptDataByte := []byte(encryptData)
+
+	if err != nil {
+		return "", fmt.Errorf("error in decode base64 public key string to pem string %s", err)
+	}
+	publicKeyRSA, err := publicKeyFrom(b)
+	if err != nil {
+		return "", fmt.Errorf("error in convert base64 public key string to rsa.PublicKey %s", err)
+	}
+
+	alg, ok := hashes[strings.ToLower(hash)]
+
+	if !ok {
+		return "", fmt.Errorf("%w: %s", ErrUnsupportedHash, hash)
+	}
+
+	ciphertext, err := rsa.EncryptOAEP(alg.fn(), rand.Reader, publicKeyRSA, encryptDataByte, []byte(""))
+
+	if err != nil {
+		return "", fmt.Errorf("error in encrypt data %s", err)
+	}
+	return base64.StdEncoding.EncodeToString(ciphertext), nil
+}
+
 func sharedSecretED(privateKey ed25519.PrivateKey, publicKey ed25519.PublicKey) ([]byte, error) {
 	epriv := ed25519X.NewKeyFromSeed(privateKey.Seed())
 	epub := ed25519X.PublicKey(publicKey)
